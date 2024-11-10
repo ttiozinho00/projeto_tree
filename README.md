@@ -35,3 +35,4 @@ gcc -o tree tree.c funcoes.c -Wall -pedantic -Wextra -Werror
 ```
 ./TREE++ /A /F
 ```
+
