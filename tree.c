@@ -57,58 +57,59 @@ int main(int argc, char *argv[])
     contador_arquivos = 0;    /* Inicializa o contador de arquivos encontrados. */
     exibir_ajuda_flag = 0;    /* Inicializa a flag para exibir a ajuda */
 
-    setlocale(LC_CTYPE, "");  /* Configura a localidade do programa para garantir o suporte a caracteres especiais. */
+   setlocale(LC_ALL, ""); /* Configura a localidade para UTF-8 */
 
-    /* Processa os argumentos da linha de comando */
+    /* Processa cada argumento da linha de comando */
     for (i = 1; i < argc; i++) 
     {
-        if (strcmp(argv[i], "/?") == 0) 
+        if (strcmp(argv[i], "/?") == 0) /* Verifica se o argumento é "/?" para exibir ajuda */
         {
-            exibir_ajuda_flag = 1; /* Se a opção /? for fornecida, marca para exibir a ajuda. */
+            exibir_ajuda_flag = 1; /* Seta a flag para exibir a ajuda */
         } 
-        else if (strcmp(argv[i], "/A") == 0) 
+        else if (strcmp(argv[i], "/A") == 0) /* Verifica se o argumento é "/A" para layout ASCII */
         {
-            if (usar_ascii) 
+            if (usar_ascii) /* Verifica se "/A" já foi definido anteriormente */
             {
                 printf("Erro: A opção /A foi especificada mais de uma vez.\n");
-                return 1;  /* Se a opção /A for fornecida mais de uma vez, exibe erro e encerra. */
+                return 1; /* Sai do programa com erro */
             }
-            usar_ascii = 1;   /* Ativa a opção de usar ASCII para exibir a estrutura de diretórios. */
+            usar_ascii = 1; /* Ativa o layout ASCII */
+            incluir_arquivos = 1; /* Ativa a inclusão de arquivos */
         } 
-        else if (strcmp(argv[i], "/F") == 0) 
+        else if (strcmp(argv[i], "/F") == 0) /* Verifica se o argumento é "/F" para incluir arquivos */
         {
-            if (incluir_arquivos) 
+            if (incluir_arquivos) /* Verifica se "/F" já foi definido anteriormente */
             {
                 printf("Erro: A opção /F foi especificada mais de uma vez.\n");
-                return 1;  /* Se a opção /F for fornecida mais de uma vez, exibe erro e encerra. */
+                return 1; /* Sai do programa com erro */
             }
-            incluir_arquivos = 1; /* Ativa a opção de incluir arquivos na exibição da estrutura de diretórios. */
+            incluir_arquivos = 1; /* Ativa a inclusão de arquivos */
         } 
         else 
         {
-            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Se o argumento não for uma opção, assume como caminho do diretório. */
+            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Assume que o argumento é um diretório */ 
         }
     }
 
-    /* Exibe a ajuda se a opção /? foi especificada */ 
+    /* Verifica se a ajuda foi solicitada */
     if (exibir_ajuda_flag) 
     {
-        exibir_ajuda();   /* Chama a função para exibir a ajuda. */
-        return 0;          /* Encerra a execução após exibir a ajuda. */
+        exibir_ajuda(); /* Exibe a ajuda */
+        return 0;       /* Sai do programa */
     }
 
-    /* Verifica se o diretório especificado existe */
+    /* Verifica se o diretório especificado existe */ 
     if (_access(diretorio, 0) != 0) 
     {
         printf("Erro: O diretório especificado '%s' não existe ou não pode ser acessado.\n", diretorio);
-        return 1;  /* Se o diretório não existir ou não puder ser acessado, exibe erro e encerra. */
+        return 1; /* Sai do programa com erro */
     }
 
-    /* Exibe a estrutura do diretório atual e chama a função de busca com o nível inicial 0 */ 
-    printf("\nEstrutura do diretório: %s\n", diretorio);
+    /* Exibe a estrutura do diretório atual e inicia a busca */
+    printf("Estrutura do diretório: %s\n", diretorio);
     buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, &contador_pastas, &contador_arquivos, 0);
 
-    /* Exibe o resumo final */ 
+    /* Exibe o resumo final */
     printf("\nVerificação concluída.\n");
     printf("Total de pastas analisadas: %d\n", contador_pastas);
     printf("Total de arquivos analisados: %d\n", contador_arquivos);
