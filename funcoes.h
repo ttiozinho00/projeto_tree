@@ -1,11 +1,11 @@
-#ifndef FUNCOES_H   /* Previne m√∫ltiplas inclus√µes do arquivo de cabe√ßalho */
+#ifndef FUNCOES_H   /* Previne m˙ltiplas inclusıes do arquivo de cabeÁalho */
 #define FUNCOES_H
 
-/* Fun√ß√£o que realiza a busca recursiva de arquivos e pastas */
+/* FunÁ„o que realiza a busca recursiva de arquivos e pastas */
 void buscar_arquivos(char *, int, int, int);
 
-/* Fun√ß√£o que exibe a ajuda do programa */
+/* FunÁ„o que exibe a ajuda do programa */
 void exibir_ajuda();
 
-#endif /* Fim da inclus√£o condicional do cabe√ßalho */
+#endif /* Fim da inclus„o condicional do cabeÁalho */
 

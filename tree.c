@@ -47,46 +47,57 @@ int main(int argc, char *argv[])
     int exibir_ajuda_flag = 0; /* Flag para exibir ajuda */
     int i;                     /* Índice para loops */
 
+    /* Inicialização das variáveis de controle */
+    exibir_ajuda_flag = 0;    /* Flag para indicar se a ajuda deve ser exibida  */
+    incluir_arquivos = 0;     /* Flag para indicar se arquivos devem ser incluídos na listagem */
+    usar_ascii = 0;           /* Flag para definir o uso de caracteres ASCII na formatação */
+
     setlocale(LC_ALL, ""); /* Configura a localidade para UTF-8 */
 
-    /* Processa argumentos da linha de comando */
+     /* Processa argumentos da linha de comando */
     for (i = 1; i < argc; i++) 
     {
+        /* Verifica se o argumento é "/?" (solicitação de ajuda) */
         if (strcmp(argv[i], "/?") == 0) 
         {
-            exibir_ajuda_flag = 1;
+            exibir_ajuda_flag = 1;  /* Ativa o indicador de exibição da ajuda */
         } 
+        /* Verifica se o argumento é "/A" (usar modo ASCII e incluir arquivos na busca) */
         else if (strcmp(argv[i], "/A") == 0) 
         {
-            usar_ascii = 1;
-            incluir_arquivos = 1;
+            usar_ascii = 1;        /* Ativa a flag para uso de caracteres ASCII */
+            incluir_arquivos = 1;  /* Ativa a flag para incluir arquivos na busca */
         } 
+        /* Verifica se o argumento é "/F" (incluir arquivos na busca) */
         else if (strcmp(argv[i], "/F") == 0) 
         {
-            incluir_arquivos = 1;
+            incluir_arquivos = 1;  /* Ativa a flag para incluir arquivos na busca */
         } 
+        /* Se o argumento não for uma opção, assume que é o diretório especificado */
         else 
         {
-            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);
+            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Copia o argumento para a variável 'diretorio' */
         }
     }
 
     /* Verifica se a ajuda foi solicitada */
     if (exibir_ajuda_flag) 
     {
-        exibir_ajuda();
-        return 0;
+        exibir_ajuda();  /* Chama a função que exibe a ajuda ao usuário */
+        return 0;        /* Encerra o programa após exibir a ajuda */
     }
 
     /* Verifica se o diretório especificado existe */
     if (_access(diretorio, 0) != 0) 
     {
         printf("Erro: O diretório especificado '%s' não existe ou não pode ser acessado.\n", diretorio);
-        return 1;
+        return 1;  /* Encerra o programa com erro */
     }
 
     /* Exibe a estrutura do diretório */
     printf("Estrutura do diretório: %s\n", diretorio);
+
+    /* Chama a função para buscar arquivos no diretório */
     buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, 0);
 
     return 0;
