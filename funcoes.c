@@ -10,7 +10,7 @@ void buscar_arquivos(char *diretorio, int incluir_arquivos, int usar_ascii, int 
     struct _finddata_t dados_arquivo;  /* Estrutura que armazena informações sobre arquivos e pastas */
     char caminho_completo[520];        /* Armazena o caminho completo do arquivo ou pasta */
     char padrao_busca[520];            /* Padrão de busca  */
-    char *simbolo = usar_ascii ? "\++ " : "|___"; /* Define o símbolo usado para mostrar a hierarquia */
+    char *simbolo = usar_ascii ? "/++ " : "|___"; /* Define o símbolo usado para mostrar a hierarquia */
 
     long handle;  /* Variável para armazenar o identificador da busca (_findfirst retorna um handle) */
     int i;        /* Variável de controle para loops */
