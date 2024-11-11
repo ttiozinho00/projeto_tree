@@ -1,5 +1,5 @@
 /*
-*metodo compilar codigo abaixo: gcc -o tree.exe tree.c funcoes.c -Wall -pedantic -Wextra -Werror
+*metodo compilar codigo: gcc -o tree.exe tree.c funcoes.c -Wall -pedantic -Wextra -Werror
 */
 
 /* 
