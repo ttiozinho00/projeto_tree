@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     usar_ascii = 0;           /* Inicializa a flag para usar ASCII na exibição da estrutura. */
     contador_pastas = 0;      /* Inicializa o contador de pastas encontradas. */
     contador_arquivos = 0;    /* Inicializa o contador de arquivos encontrados. */
-    exibir_ajuda_flag = 0;    /* Inicializa a flag para exibir a ajuda (não exibe por padrão). */
+    exibir_ajuda_flag = 0;    /* Inicializa a flag para exibir a ajuda */
 
     setlocale(LC_CTYPE, "");  /* Configura a localidade do programa para garantir o suporte a caracteres especiais. */
 
