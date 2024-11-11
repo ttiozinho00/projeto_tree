@@ -39,7 +39,7 @@
 #include "funcoes.h"   /* Declarações das funções */
 
 /* Função principal do programa */
-int main(int argc, char *argv[]) 
+int main(int argc, char const *argv[])
 {
     char diretorio[520] = "."; /* Diretório inicial */
     int incluir_arquivos = 0;  /* Flag para incluir arquivos */
@@ -54,22 +54,22 @@ int main(int argc, char *argv[])
 
     setlocale(LC_ALL, ""); /* Configura a localidade para UTF-8 */
 
-     /* Processa argumentos da linha de comando */
-    for (i = 1; i < argc; i++) 
+    /* Processa argumentos da linha de comando */
+    for (i = 1; i < argc; i++)
     {
         /* Verifica se o argumento é "/?" (solicitação de ajuda) */
         if (strcmp(argv[i], "/?") == 0) 
         {
             exibir_ajuda_flag = 1;  /* Ativa o indicador de exibição da ajuda */
         } 
-        /* Verifica se o argumento é "/A" (usar modo ASCII e incluir arquivos na busca) */
-        else if (strcmp(argv[i], "/A") == 0) 
+        /* Verifica se o argumento é "/A" ou "/a" (usar modo ASCII e incluir arquivos na busca) */
+        else if (strcmp(argv[i], "/A") == 0 || strcmp(argv[i], "/a") == 0) 
         {
             usar_ascii = 1;        /* Ativa a flag para uso de caracteres ASCII */
             incluir_arquivos = 1;  /* Ativa a flag para incluir arquivos na busca */
         } 
         /* Verifica se o argumento é "/F" (incluir arquivos na busca) */
-        else if (strcmp(argv[i], "/F") == 0) 
+        else if (strcmp(argv[i], "/F") == 0 || strcmp(argv[i], "/f") == 0) 
         {
             incluir_arquivos = 1;  /* Ativa a flag para incluir arquivos na busca */
         } 
@@ -77,8 +77,10 @@ int main(int argc, char *argv[])
         else 
         {
             strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Copia o argumento para a variável 'diretorio' */
+            diretorio[sizeof(diretorio) - 1] = '\0';             /* Garante que a string seja terminada com '\0' */
         }
     }
+        
 
     /* Verifica se a ajuda foi solicitada */
     if (exibir_ajuda_flag) 
@@ -99,7 +101,6 @@ int main(int argc, char *argv[])
 
     /* Chama a função para buscar arquivos no diretório */
     buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, 0);
-
     return 0;
 }
 
