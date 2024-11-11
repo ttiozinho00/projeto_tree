@@ -1,26 +1,26 @@
-#include "funcoes.h"
+#include <direct.h>
+#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <io.h>
-#include <direct.h>
 
+#include "funcoes.h"
 
 void buscar_arquivos(const char *diretorio, int incluir_arquivos, int usar_ascii, int *contador_pastas, int *contador_arquivos, int nivel) 
 {
     struct _finddata_t dados_arquivo; 
-    char caminho_completo[520];        
-    char padrao_busca[520]; 
-    char *simbolo;           
+    char caminho_completo[520];    
+    char padrao_busca[520];   
+    char *simbolo;          
     long handle;                       
     int i;
 
-    simbolo = usar_ascii ? "|-- " : "|-- "; /*Para ANSI, ambos são "|-- "*/ 
+    simbolo = usar_ascii ? "|-- " : "|-- ";
 
-    /*Define o padrão de busca para todos os arquivos e diretórios no diretório atual*/ 
+    /* Define o padrão de busca para todos os arquivos e diretórios no diretório atual */
     sprintf(padrao_busca, "%s\\*.*", diretorio);
 
-    /*Inicia a busca no diretório*/ 
+    /* Inicia a busca no diretório */
     handle = _findfirst(padrao_busca, &dados_arquivo);
 
     if (handle == -1L) 
@@ -29,36 +29,36 @@ void buscar_arquivos(const char *diretorio, int incluir_arquivos, int usar_ascii
         return;  
     }
 
-    /*Alinha pastas e arquivos em sequência com indentação*/ 
+    /* Alinha pastas e arquivos em sequência com indentação */
     printf("Conteúdo do diretório '%s':\n\n", diretorio);
     
     do 
     {
-        /*Ignora os diretórios "." e ".."*/ 
+        /* Ignora os diretórios "." e ".." */
         if (strcmp(dados_arquivo.name, ".") == 0 || strcmp(dados_arquivo.name, "..") == 0) 
         {
             continue;
         }
 
-        /*Cria o caminho completo para o arquivo ou subdiretório*/ 
+        /* Cria o caminho completo para o arquivo ou subdiretório */
         sprintf(caminho_completo, "%s\\%s", diretorio, dados_arquivo.name);
-
-        /*Imprime a indentação para simular a hierarquia*/ 
+        
+        /* Imprime a indentação para simular a hierarquia */
         for (i = 0; i < nivel; i++) 
         {
             printf("    ");
         }
 
-        /*Se é um subdiretório, exibe, incrementa o contador e chama a função recursivamente*/ 
+        /* Se é um subdiretório, exibe, incrementa o contador e chama a função recursivamente */
         if (dados_arquivo.attrib & _A_SUBDIR) 
         {
             (*contador_pastas)++;
             printf("%s[DIR] %s\n", simbolo, dados_arquivo.name);
 
-            /*Chamada recursiva para explorar a subpasta*/
+            /* Chamada recursiva para explorar a subpasta */
             buscar_arquivos(caminho_completo, incluir_arquivos, usar_ascii, contador_pastas, contador_arquivos, nivel + 1);
         } 
-        /*Se for um arquivo e a opção incluir_arquivos está ativada, exibe e incrementa o contador de arquivos*/ 
+        /* Se for um arquivo e a opção incluir_arquivos está ativada, exibe e incrementa o contador de arquivos */
         else if (incluir_arquivos) 
         {  
             (*contador_arquivos)++;
@@ -66,9 +66,9 @@ void buscar_arquivos(const char *diretorio, int incluir_arquivos, int usar_ascii
         }
     } while (_findnext(handle, &dados_arquivo) == 0);  
 
-    _findclose(handle);  /*Fecha o manipulador de diretório*/ 
+    _findclose(handle);  /* Fecha o manipulador de diretório */
 
-    /*Exibe o resumo final ao sair da recursão principal*/ 
+    /* Exibe o resumo final ao sair da recursão principal */
     if (nivel == 0) 
     {
         printf("\nTotal de pastas: %d\n", *contador_pastas);

@@ -1,13 +1,13 @@
-#include <string.h>
-#include <stdio.h>
-#include <locale.h>
 #include <io.h>          /* Para uso de _access no Windows */
+#include <locale.h>
+#include <stdio.h>
+#include <string.h>
+
 #include "funcoes.h"
 
 int main(int argc, char *argv[]) 
 {
-    char *diretorio; 
-    char resposta;
+    char diretorio[520] = ".";  /* Diretório padrão é o diretório atual */
     int incluir_arquivos;
     int usar_ascii;
     int contador_pastas;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     contador_pastas = 0;
     contador_arquivos = 0;
     exibir_ajuda_flag = 0;
-    diretorio = "C:\\"; 
+    
 
     setlocale(LC_CTYPE, "");
 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         } 
         else 
         {
-            diretorio = argv[i];  /* Assume que o argumento é um diretório */ 
+            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Assume que o argumento é um diretório */ 
         }
     }
 
@@ -69,20 +69,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    /* Confirmação para explorar o sistema completo, caso o diretório seja a raiz */ 
-    if (strcmp(diretorio, "C:\\") == 0) 
-    {
-        printf("Você está prestes a verificar todo o sistema, o que pode levar um tempo significativo.\n");
-        printf("Deseja continuar? (s/n): ");
-        scanf(" %c", &resposta);
-        if (resposta != 's' && resposta != 'S') 
-        {
-            printf("Operação cancelada pelo usuário.\n");
-            return 0;
-        }
-    }
-
-    /* Exibe a estrutura do diretório e chama a função de busca com o nível inicial 0 */ 
+    /* Exibe a estrutura do diretório atual e chama a função de busca com o nível inicial 0 */ 
     printf("Estrutura do diretório: %s\n", diretorio);
     buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, &contador_pastas, &contador_arquivos, 0);
 
