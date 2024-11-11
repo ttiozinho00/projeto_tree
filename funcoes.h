@@ -1,10 +1,11 @@
-#ifndef FUNCOES_H   /* Previne múltiplas inclusões do arquivo de cabeçalho. */
-#define FUNCOES_H   /* Define o nome do arquivo de cabeçalho. */
+#ifndef FUNCOES_H   /* Previne mÃºltiplas inclusÃµes do arquivo de cabeÃ§alho */
+#define FUNCOES_H
 
-/* Função que realiza a busca recursiva de arquivos e pastas */
-void buscar_arquivos(char *, int, int, int *, int *, int);
+/* FunÃ§Ã£o que realiza a busca recursiva de arquivos e pastas */
+void buscar_arquivos(char *, int, int, int);
 
-/* Função que exibe a ajuda do programa */
-void exibir_ajuda(); 
+/* FunÃ§Ã£o que exibe a ajuda do programa */
+void exibir_ajuda();
 
-#endif  /* Fim da inclusão condicional do cabeçalho. */
+#endif /* Fim da inclusÃ£o condicional do cabeÃ§alho */
+

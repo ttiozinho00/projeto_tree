@@ -1,8 +1,8 @@
 /*
-*metodo compilar codigo: gcc -o tree.exe tree.c funcoes.c -Wall -pedantic -Wextra -Werror
+* Método de compilação do código: gcc -o tree.exe tree.c funcoes.c -Wall -pedantic -Wextra -Werror
 */
 
-/* 
+/*
    Programa: Estrutura de Diretórios (Tree)
    Descrição: Este programa exibe a estrutura de diretórios e arquivos a partir de um diretório raiz, com opções para incluir ou excluir arquivos, e exibir a estrutura utilizando caracteres ASCII.
 
@@ -32,87 +32,63 @@
    RGM: [Seu RGM]
    Data da última modificação: [Data da modificação]
 */
-
-#include <io.h>        /* _findfirst(), _findnext(), _findclose()  */
+#include <io.h>        /* _findfirst(), _findnext(), _findclose() */
 #include <locale.h>    /* setlocale() */
-#include <stdio.h>     /* printf() . */
+#include <stdio.h>     /* printf() */
 #include <string.h>    /* strcmp() */
-#include "funcoes.h"   /* Declarações das funções  */
+#include "funcoes.h"   /* Declarações das funções */
 
 /* Função principal do programa */
 int main(int argc, char *argv[]) 
 {
-    char diretorio[520] = "."; /* Declara uma variável 'diretorio',  tamanho 520, inicializada com o valor "." que representa o diretório atual. */
-    int contador_arquivos; /* Declara uma variável 'contador_arquivos', utilizada para contar o número de arquivos em um diretório. */
-    int exibir_ajuda_flag; /* Declara uma variável 'exibir_ajuda_flag', utilizada como flag para controlar se a ajuda será exibida ao usuário. */
-    int incluir_arquivos; /* Declara uma variável 'incluir_arquivos', utilizada para decidir se os arquivos devem ser incluídos na operação (1 para incluir, 0 para não). */
-    int contador_pastas; /* Declara uma variável 'contador_pastas',  utilizada para contar o número de pastas em um diretório. */
-    int usar_ascii; /* Declara uma variável 'usar_ascii', usada para controlar se a exibição deve ser feita com caracteres ASCII. */
-    int i; /* Declara uma variável 'i', frequentemente usada como índice em loops de iteração. */
+    char diretorio[520] = "."; /* Diretório inicial */
+    int incluir_arquivos = 0;  /* Flag para incluir arquivos */
+    int usar_ascii = 0;        /* Flag para usar ASCII */
+    int exibir_ajuda_flag = 0; /* Flag para exibir ajuda */
+    int i;                     /* Índice para loops */
 
+    setlocale(LC_ALL, ""); /* Configura a localidade para UTF-8 */
 
-    incluir_arquivos = 0;      /* Inicializa a flag para incluir arquivos. */
-    usar_ascii = 0;           /* Inicializa a flag para usar ASCII na exibição da estrutura. */
-    contador_pastas = 0;      /* Inicializa o contador de pastas encontradas. */
-    contador_arquivos = 0;    /* Inicializa o contador de arquivos encontrados. */
-    exibir_ajuda_flag = 0;    /* Inicializa a flag para exibir a ajuda */
-
-   setlocale(LC_ALL, ""); /* Configura a localidade para UTF-8 */
-
-    /* Processa cada argumento da linha de comando */
+    /* Processa argumentos da linha de comando */
     for (i = 1; i < argc; i++) 
     {
-        if (strcmp(argv[i], "/?") == 0) /* Verifica se o argumento é "/?" para exibir ajuda */
+        if (strcmp(argv[i], "/?") == 0) 
         {
-            exibir_ajuda_flag = 1; /* Seta a flag para exibir a ajuda */
+            exibir_ajuda_flag = 1;
         } 
-        else if (strcmp(argv[i], "/A") == 0) /* Verifica se o argumento é "/A" para layout ASCII */
+        else if (strcmp(argv[i], "/A") == 0) 
         {
-            if (usar_ascii) /* Verifica se "/A" já foi definido anteriormente */
-            {
-                printf("Erro: A opção /A foi especificada mais de uma vez.\n");
-                return 1; /* Sai do programa com erro */
-            }
-            usar_ascii = 1; /* Ativa o layout ASCII */
-            incluir_arquivos = 1; /* Ativa a inclusão de arquivos */
+            usar_ascii = 1;
+            incluir_arquivos = 1;
         } 
-        else if (strcmp(argv[i], "/F") == 0) /* Verifica se o argumento é "/F" para incluir arquivos */
+        else if (strcmp(argv[i], "/F") == 0) 
         {
-            if (incluir_arquivos) /* Verifica se "/F" já foi definido anteriormente */
-            {
-                printf("Erro: A opção /F foi especificada mais de uma vez.\n");
-                return 1; /* Sai do programa com erro */
-            }
-            incluir_arquivos = 1; /* Ativa a inclusão de arquivos */
+            incluir_arquivos = 1;
         } 
         else 
         {
-            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);  /* Assume que o argumento é um diretório */ 
+            strncpy(diretorio, argv[i], sizeof(diretorio) - 1);
         }
     }
 
     /* Verifica se a ajuda foi solicitada */
     if (exibir_ajuda_flag) 
     {
-        exibir_ajuda(); /* Exibe a ajuda */
-        return 0;       /* Sai do programa */
+        exibir_ajuda();
+        return 0;
     }
 
-    /* Verifica se o diretório especificado existe */ 
+    /* Verifica se o diretório especificado existe */
     if (_access(diretorio, 0) != 0) 
     {
         printf("Erro: O diretório especificado '%s' não existe ou não pode ser acessado.\n", diretorio);
-        return 1; /* Sai do programa com erro */
+        return 1;
     }
 
-    /* Exibe a estrutura do diretório atual e inicia a busca */
+    /* Exibe a estrutura do diretório */
     printf("Estrutura do diretório: %s\n", diretorio);
-    buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, &contador_pastas, &contador_arquivos, 0);
+    buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, 0);
 
-    /* Exibe o resumo final */
-    printf("\nVerificação concluída.\n");
-    printf("Total de pastas analisadas: %d\n", contador_pastas);
-    printf("Total de arquivos analisados: %d\n", contador_arquivos);
-
-    return 0;  /* Encerra o programa com sucesso. */
+    return 0;
 }
+
