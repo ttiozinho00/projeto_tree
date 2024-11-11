@@ -103,4 +103,3 @@ int main(int argc, char const *argv[])
     buscar_arquivos(diretorio, incluir_arquivos, usar_ascii, 0);
     return 0;
 }
-
