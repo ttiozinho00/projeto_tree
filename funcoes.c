@@ -1,83 +1,84 @@
-/*funcoes.c*/
-#include <io.h>        /* _findfirst(), _findnext(), _findclose() para busca de arquivos e diretórios */
-#include <stdio.h>     /* printf() para exibir informações na tela */
+#include <io.h>        /* _findfirst(), _findnext(), _findclose() para busca de arquivos e diretÃ³rios */
+#include <stdio.h>     /* printf() para exibir informaÃ§Ãµes na tela */
 #include <stdlib.h>    /* exit() para encerrar o programa em caso de erro */
 #include <string.h>    /* strcmp() para comparar strings */
-#include "funcoes.h"   /* Declarações das funções definidas neste arquivo */
+#include "funcoes.h"   /* DeclaraÃ§Ãµes das funÃ§Ãµes definidas neste arquivo */
 
-/* Função recursiva que busca arquivos e pastas em um diretório */
+/* FunÃ§Ã£o recursiva que busca arquivos e pastas em um diretÃ³rio */
 void buscar_arquivos(char *diretorio, int incluir_arquivos, int usar_ascii, int nivel) 
 {
-    struct _finddata_t dados_arquivo;  /* Estrutura que armazena informações sobre arquivos e pastas */
+    struct _finddata_t dados_arquivo;  /* Estrutura que armazena informaÃ§Ãµes sobre arquivos e pastas */
     char caminho_completo[520];        /* Armazena o caminho completo do arquivo ou pasta */
-    char padrao_busca[520];            /* Padrão de busca  */
-    char *simbolo = usar_ascii ? "/++ " : "|___"; /* Define o símbolo usado para mostrar a hierarquia */
+    char padrao_busca[520];            /* PadrÃ£o de busca  */
+    char *simbolo = usar_ascii ? "/++ " : "â””â”€â”€"; /* Define o sÃ­mbolo usado para mostrar a hierarquia */
 
-    long handle;  /* Variável para armazenar o identificador da busca (_findfirst retorna um handle) */
-    int i;        /* Variável de controle para loops */
+    long handle;  /* VariÃ¡vel para armazenar o identificador da busca (_findfirst retorna um handle) */
+    int i;        /* VariÃ¡vel de controle para loops */
 
-    /* Define o padrão de busca usando o diretório informado */
+    /* Define o padrÃ£o de busca usando o diretÃ³rio informado */
     sprintf(padrao_busca, "%s\\*.*", diretorio);
 
-    /* Inicia a busca no diretório usando o padrão definido */
+    /* Inicia a busca no diretÃ³rio usando o padrÃ£o definido */
     handle = _findfirst(padrao_busca, &dados_arquivo);
     if (handle == -1L) 
     {
-        /* Verifica se houve erro ao abrir o diretório */
-        printf("Erro ao abrir o diretório: %s\n", diretorio);
-        return; /* Sai da função se o diretório não puder ser aberto */
+        /* Verifica se houve erro ao abrir o diretÃ³rio */
+        printf("Erro ao abrir o diretÃ³rio: %s\n", diretorio);
+        return; /* Sai da funÃ§Ã£o se o diretÃ³rio nÃ£o puder ser aberto */
     }
 
     /* Loop para listar arquivos e pastas encontrados */
     do 
     {
-        /* Verifica se o arquivo é "." ou "..", que representam o diretório atual e o pai */
+        /* Verifica se o arquivo Ã© "." ou "..", que representam o diretÃ³rio atual e o pai */
         if (strcmp(dados_arquivo.name, ".") == 0 || strcmp(dados_arquivo.name, "..") == 0) 
         {
-            continue; /* Ignora esses diretórios especiais */
+            continue; /* Ignora esses diretÃ³rios especiais */
         }
 
-        /* Constrói o caminho completo do arquivo ou pasta */
+        /* ConstrÃ³i o caminho completo do arquivo ou pasta */
         sprintf(caminho_completo, "%s\\%s", diretorio, dados_arquivo.name);
 
-        /* Exibe a indentação para representar a hierarquia de diretórios */
+        /* Exibe a indentaÃ§Ã£o para representar a hierarquia de diretÃ³rios */
         for (i = 0; i < nivel; i++) 
         {
             printf("    ");
         }
 
-        /* Verifica se é uma pasta */
+        /* Verifica se Ã© uma pasta */
         if (dados_arquivo.attrib & _A_SUBDIR) 
         {
-            /* Exibe o nome da pasta com o símbolo de hierarquia */
+            /* Exibe o nome da pasta com o sÃ­mbolo de hierarquia */
             printf("%s %s\n", simbolo, dados_arquivo.name);
-            /* Chama a função recursivamente para listar o conteúdo da pasta */
+            /* Chama a funÃ§Ã£o recursivamente para listar o conteÃºdo da pasta */
             buscar_arquivos(caminho_completo, incluir_arquivos, usar_ascii, nivel + 1);
         } 
         else if (incluir_arquivos) 
         {
-            /* Exibe o nome do arquivo se a opção de incluir arquivos estiver ativada */
-            printf("%s %s\n", simbolo, dados_arquivo.name);
+            /* Exibe o nome do arquivo se a opÃ§Ã£o de incluir arquivos estiver ativada */
+            printf("%s %s\n", "+---", dados_arquivo.name);  /* SÃ­mbolo para arquivos */
         }
-    } while (_findnext(handle, &dados_arquivo) == 0); /* Continua listando os próximos arquivos até não haver mais */
+    } while (_findnext(handle, &dados_arquivo) == 0); /* Continua listando os prÃ³ximos arquivos atÃ© nÃ£o haver mais */
 
     /* Fecha a busca para liberar recursos */
     _findclose(handle);
 }
 
-/* Função que exibe a ajuda do programa */
+/* FunÃ§Ã£o que exibe a ajuda do programa */
 void exibir_ajuda() 
 {
-    /* Exibe a sintaxe de uso e as opções disponíveis */
-    printf("Uso: TREE++ [diretório] [/A] [/F]\n");
-    printf("Opções:\n");
-    printf("  [diretório]  Especifica o caminho do diretório a ser listado.\n");
-    printf("  /A           Usa caracteres ASCII para o layout gráfico\n");
-    printf("  /F           Exibe os nomes dos arquivos nos diretórios\n");
+    /* Exibe a sintaxe de uso e as opÃ§Ãµes disponÃ­veis */
+    printf("Uso: TREE++ [diretÃ³rio] [/A] [/F]\n");
+    printf("OpÃ§Ãµes:\n");
+    printf("  [diretÃ³rio]  Especifica o caminho do diretÃ³rio a ser listado.\n");
+    printf("  /A           Usa caracteres ASCII para o layout grÃ¡fico\n");
+    printf("  /F           Exibe os nomes dos arquivos nos diretÃ³rios\n");
     printf("  /?           Exibe esta tela de ajuda\n\n");
 
     /* Exemplos de como usar o programa */
     printf("Exemplos:\n");
-    printf("TREE++ C:\\meu_diretório /A /F  - Lista o conteúdo do diretório 'C:\\meu_diretório' com ASCII e inclui arquivos.\n");
-    printf("TREE++ /F - Lista o conteúdo do diretório solicitado com arquivos incluídos.\n");
+    printf("TREE++ C:\\meu_diretÃ³rio /A /F  - Lista o conteÃºdo do diretÃ³rio 'C:\\meu_diretÃ³rio' com ASCII e inclui arquivos.\n");
+    printf("TREE++ /F - Lista o conteÃºdo do diretÃ³rio solicitado com arquivos incluÃ­dos.\n");
 }
+
+aplique aqui no codigo exemplo gerado

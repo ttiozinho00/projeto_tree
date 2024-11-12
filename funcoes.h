@@ -1,4 +1,3 @@
-/*funcoes.h*/
 #ifndef FUNCOES_H   /* Previne múltiplas inclusões do arquivo de cabeçalho */
 #define FUNCOES_H
 
