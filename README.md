@@ -8,6 +8,10 @@
 gcc -o tree tree.c funcoes.c -Wall -pedantic -Wextra -Werror
 ```
 
+```
+gcc -o tree tree.c funcoes_v1.c -Wall -pedantic -Wextra -Werror
+```
+
 -  Execução Padrão (Somente Diretórios)
 
 ```

@@ -1,3 +1,4 @@
+/*funcoes.c*/
 #include <io.h>        /* _findfirst(), _findnext(), _findclose() para busca de arquivos e diretórios */
 #include <stdio.h>     /* printf() para exibir informações na tela */
 #include <stdlib.h>    /* exit() para encerrar o programa em caso de erro */
