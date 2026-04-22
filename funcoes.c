@@ -80,5 +80,3 @@ void exibir_ajuda()
     printf("TREE++ C:\\meu_diretório /A /F  - Lista o conteúdo do diretório 'C:\\meu_diretório' com ASCII e inclui arquivos.\n");
     printf("TREE++ /F - Lista o conteúdo do diretório solicitado com arquivos incluídos.\n");
 }
-
-aplique aqui no codigo exemplo gerado
